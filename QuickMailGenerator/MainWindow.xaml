@@ -1,0 +1,28 @@
+﻿<Window x:Class="QuickMailGenerator.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:QuickMailGenerator"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="Auto" Width="Auto">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <!-- 1:2の比率で列を定義 -->
+            <ColumnDefinition Width="1*" MaxWidth="300"/>
+            <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
+        <!--
+        <TextBox x:Name="textBox2" HorizontalAlignment="Left" Height="23"  TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" Grid.Column="1"/>
+        -->
+        
+        <ScrollViewer >
+            <StackPanel Name="MenuPanel">
+            </StackPanel>
+        </ScrollViewer>
+        <ScrollViewer Grid.Column="1">
+            <StackPanel Name="TemplatePanel" Margin="10">
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Window>
