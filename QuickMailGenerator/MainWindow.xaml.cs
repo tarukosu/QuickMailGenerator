@@ -244,11 +244,11 @@ namespace QuickMailGenerator
             var url = $"mailto:{mailDic["to"]}?";
             if(mailDic["cc"] != "")
             {
-                url += $"cc ={ mailDic["cc"]}&";
+                url += $"cc={ mailDic["cc"]}&";
             }
             if(mailDic["bcc"] != "")
             {
-                url += $"bcc ={ mailDic["bcc"]}&";
+                url += $"bcc={ mailDic["bcc"]}&";
             }
             if(mailDic["title"] != "")
             {

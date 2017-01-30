@@ -1,7 +1,7 @@
 ﻿{
   "menu": [
     {
-      "id": "template2",
+      "id": "template1",
       "name": "テンプレート1"
     },
     {
@@ -27,8 +27,10 @@
       "id": "template2",
       "name": "テンプレート1",
       "to": "to@sample.com",
-      "title": "メールタイトル",
-      "content": "メール本文{user}\naa{header}",
+      "cc": "cc@sample.com",
+      "bcc": "bcc@sample.com",
+      "title": "ユーザ名:{user}",
+      "content": "{header}メール本文",
       "input": [
         {
           "name": "user",
@@ -38,7 +40,7 @@
           "name": "header",
           "description": "ヘッダ",
           "type": "Multiline",
-          "default": "こんにちは。\nはじめまして。\n"
+          "default": "こんにちは。{user}さん\nはじめまして。\n"
         }
       ]
 
