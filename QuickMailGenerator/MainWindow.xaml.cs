@@ -39,7 +39,7 @@ namespace QuickMailGenerator
 
             try
             {
-                var settingsText = File.ReadAllText("Settings.json");
+                var settingsText = File.ReadAllText("config/Settings.json");
 
 
                 settings = JsonConvert.DeserializeObject<Settings>(settingsText, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Populate });
