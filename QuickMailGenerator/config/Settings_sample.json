@@ -1,0 +1,65 @@
+﻿{
+  "menu": [
+    {
+      "id": "template1",
+      "name": "テンプレート1"
+    },
+    {
+      "id": "template2",
+      "name": "テンプレート2"
+    },
+    {
+      "id": "template3",
+      "name": "テンプレート3"
+    }
+  ],
+  "general": {
+    "input": [
+      {
+        "name": "user",
+        "description": "general user name",
+        "default": "default user name"
+      },
+      {
+        "name": "footer",
+        "type": "Multiline"
+      }
+    ]
+  },
+  "templates": [
+
+    {
+      "id": "template1",
+      "name": "テンプレート1",
+      "to": "to@sample.com",
+      "title": "メールタイトル",
+      "content": "メール本文"
+    },
+
+    {
+      "id": "template2",
+      "name": "テンプレート1",
+      "to": "to@sample.com",
+      "cc": "cc@sample.com",
+      "bcc": "bcc@sample.com",
+      "title": "ユーザ名:{user}",
+      "content": "{header}メール本文\n{footer}",
+      "input": [
+        {
+          "name": "user",
+          "default": "user name"
+        },
+        {
+          "name": "header",
+          "description": "ヘッダ",
+          "type": "Multiline",
+          "default": "こんにちは。{user}さん\nはじめまして。\n"
+        },
+        {
+          "name": "footer"
+        }
+      ]
+
+    }
+  ]
+}
