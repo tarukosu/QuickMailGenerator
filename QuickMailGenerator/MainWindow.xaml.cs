@@ -92,6 +92,8 @@ namespace QuickMailGenerator
 
                 if (template.Inputs != null)
                 {
+                    bool firstElement = true;
+
                     foreach (var input in template.Inputs)
                     {
                         Grid InputGrid = new Grid();
@@ -153,17 +155,32 @@ namespace QuickMailGenerator
                                 };
                                 break;
                         }
+
                         inputStack.Children.Add(inputBox);
                         inputStack.SetValue(Grid.ColumnProperty, 1);
                         InputGrid.Children.Add(inputStack);
                         TemplatePanel.Children.Add(InputGrid);
+
+                        if (firstElement)
+                        {
+                            inputBox.Focus();
+                            firstElement = false;
+                        }
                     }
+
+
                 }
+
                 var mailButton = new Button
                 {
                     Content = "メール作成",
                     FontSize = fontSizeH1
                 };
+
+                var buttonMargin = mailButton.Margin;
+                buttonMargin.Top = 10;
+                mailButton.Margin = buttonMargin;
+
                 mailButton.Click += MailButton_Click;
                 TemplatePanel.Children.Add(mailButton);
             }
