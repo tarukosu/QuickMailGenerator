@@ -222,11 +222,26 @@ namespace QuickMailGenerator
             {
                 mailDic[key] = mailDic[key].Replace("\n", "%0A");
             }
-            
-            var url = $"mailto:{mailDic["to"]}?cc={mailDic["cc"]}&bcc={mailDic["bcc"]}";
-            url += $"&subject={mailDic["title"]}&body={mailDic["content"]}";
+
+
+            var url = $"mailto:{mailDic["to"]}?";
+            if(mailDic["cc"] != "")
+            {
+                url += $"cc ={ mailDic["cc"]}&";
+            }
+            if(mailDic["bcc"] != "")
+            {
+                url += $"bcc ={ mailDic["bcc"]}&";
+            }
+            if(mailDic["title"] != "")
+            {
+                url += $"subject={mailDic["title"]}&";
+            }
+            if(mailDic["content"] != "")
+            {
+                url += $"body={mailDic["content"]}";
+            }
             Debug.WriteLine(url);
-            
             Process.Start(url);
         }
 
