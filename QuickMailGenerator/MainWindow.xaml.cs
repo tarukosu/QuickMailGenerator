@@ -36,17 +36,17 @@ namespace QuickMailGenerator
         public MainWindow()
         {
             InitializeComponent();
-            
+
             try
             {
                 var settingsText = File.ReadAllText("Settings.json");
 
-                
+
                 settings = JsonConvert.DeserializeObject<Settings>(settingsText, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Populate });
                 foreach (var menuItem in settings.MenuItems)
                 {
                     Console.WriteLine("Id: {0}, Name: {1}", menuItem.Id, menuItem.Name);
-                   
+
                     var button = new Button
                     {
                         Content = menuItem.Name,
@@ -54,14 +54,61 @@ namespace QuickMailGenerator
                         FontSize = fontSizeMenu
                     };
                     button.Click += MenuButton_Click;
-                    MenuPanel.Children.Add(button);              
+                    MenuPanel.Children.Add(button);
                 }
 
-                if(settings.MenuItems.Count > 0)
+                if (settings.GeneralSettings.Inputs == null)
+                {
+                    settings.GeneralSettings.Inputs = new List<Input>();
+                }
+
+                foreach (var template in settings.Templates)
+                {
+                    if (template.Inputs == null)
+                    {
+                        template.Inputs = new List<Input>();
+                    }
+                    foreach (var input in template.Inputs)
+                    {
+                        var sameNameInput = settings.GeneralSettings.Inputs.FirstOrDefault(x => x.Name == input.Name);
+                        if (sameNameInput != null)
+                        {
+                            if (input.Description == null)
+                            {
+                                input.Description = sameNameInput.Description;
+                            }
+                            if (input.Default == null)
+                            {
+                                input.Default = sameNameInput.Default;
+                            }
+                            if (input.Type == InputType.Null)
+                            {
+                                input.Type = sameNameInput.Type;
+                            }
+                        }
+
+                        if (input.Default == null)
+                        {
+                            input.Default = "";
+                        }
+
+                        if (input.Description == null)
+                        {
+                            input.Description = "";
+                        }
+
+                        if (input.Type == InputType.Null)
+                        {
+                            input.Type = InputType.Singleline;
+                        }
+                    }
+                }
+
+                if (settings.MenuItems.Count > 0)
                 {
                     OpenTemplate(settings.MenuItems[0].Id);
-                }           
-                
+                }
+
 
             }
             catch (Exception e)
@@ -75,14 +122,15 @@ namespace QuickMailGenerator
             TemplatePanel.Children.Clear();
             var template = settings.Templates.Find(t => t.Id == id);
             openingTemplate = template;
-            if(template == null)
+            if (template == null)
             {
                 TemplatePanel.Children.Add(new TextBlock
                 {
                     Text = $"Cannot find template: {id}",
                     FontSize = fontSizeH1
                 });
-            }else
+            }
+            else
             {
                 TemplatePanel.Children.Add(new TextBlock
                 {
@@ -90,27 +138,25 @@ namespace QuickMailGenerator
                     FontSize = fontSizeH1
                 });
 
-                if (template.Inputs != null)
+                bool firstElement = true;
+
+                foreach (var input in template.Inputs)
                 {
-                    bool firstElement = true;
+                    Grid InputGrid = new Grid();
+                    var margin = InputGrid.Margin;
+                    margin.Top = 20;
+                    InputGrid.Margin = margin;
 
-                    foreach (var input in template.Inputs)
-                    {
-                        Grid InputGrid = new Grid();
-                        var margin = InputGrid.Margin;
-                        margin.Top = 20;
-                        InputGrid.Margin = margin;
-                        
-                        ColumnDefinition gridCol1 = new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) };
-                        ColumnDefinition gridCol2 = new ColumnDefinition() { Width = new GridLength(2, GridUnitType.Star) };
-                        InputGrid.ColumnDefinitions.Add(gridCol1);
-                        InputGrid.ColumnDefinitions.Add(gridCol2);
+                    ColumnDefinition gridCol1 = new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) };
+                    ColumnDefinition gridCol2 = new ColumnDefinition() { Width = new GridLength(2, GridUnitType.Star) };
+                    InputGrid.ColumnDefinitions.Add(gridCol1);
+                    InputGrid.ColumnDefinitions.Add(gridCol2);
 
-                        InputGrid.Children.Add(
-                            new StackPanel
+                    InputGrid.Children.Add(
+                        new StackPanel
+                        {
+                            Children =
                             {
-                                Children =
-                                {
                                      new TextBlock
                                     {
                                         Name = "name",
@@ -122,53 +168,51 @@ namespace QuickMailGenerator
                                         Text = input.Description,
                                         FontSize = fontSizeInputDescription
                                     },
-                                }
-                            });
+                            }
+                        });
 
 
-                        var inputStack = new StackPanel();
-                        
-                        var iMargin = inputStack.Margin;
-                        iMargin.Top = 10;
-                        inputStack.Margin = iMargin;
-                        
+                    var inputStack = new StackPanel();
 
-                        TextBox inputBox = new TextBox();
-                        switch (input.Type)
-                        {
-                            case InputType.Singleline:
-                                inputBox = new TextBox
-                                {
-                                    Name = "input",
-                                    Text = input.Default,
-                                    FontSize = fontSizeInput,
-                                    Height = double.NaN
-                                    };
-                                break;
-                            case InputType.Multiline:
-                                inputBox = new TextBox
-                                {
-                                    Text = input.Default,
-                                    FontSize = fontSizeInput,
-                                    VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
-                                    AcceptsReturn = true
-                                };
-                                break;
-                        }
+                    var iMargin = inputStack.Margin;
+                    iMargin.Top = 10;
+                    inputStack.Margin = iMargin;
 
-                        inputStack.Children.Add(inputBox);
-                        inputStack.SetValue(Grid.ColumnProperty, 1);
-                        InputGrid.Children.Add(inputStack);
-                        TemplatePanel.Children.Add(InputGrid);
 
-                        if (firstElement)
-                        {
-                            inputBox.Focus();
-                            firstElement = false;
-                        }
+                    TextBox inputBox = new TextBox();
+                    switch (input.Type)
+                    {
+                        case InputType.Singleline:
+                            inputBox = new TextBox
+                            {
+                                Name = "input",
+                                Text = input.Default,
+                                FontSize = fontSizeInput,
+                                Height = double.NaN
+                            };
+                            break;
+                        case InputType.Multiline:
+                            inputBox = new TextBox
+                            {
+                                Text = input.Default,
+                                FontSize = fontSizeInput,
+                                VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+                                AcceptsReturn = true,
+                                MinLines = 3
+                            };
+                            break;
                     }
 
+                    inputStack.Children.Add(inputBox);
+                    inputStack.SetValue(Grid.ColumnProperty, 1);
+                    InputGrid.Children.Add(inputStack);
+                    TemplatePanel.Children.Add(InputGrid);
 
+                    if (firstElement)
+                    {
+                        inputBox.Focus();
+                        firstElement = false;
+                    }
                 }
 
                 var mailButton = new Button
@@ -199,7 +243,7 @@ namespace QuickMailGenerator
             foreach (var child in TemplatePanel.Children)
             {
                 Grid grid = child as Grid;
-                if(grid != null)
+                if (grid != null)
                 {
                     StackPanel stack = grid.Children[0] as StackPanel;
                     var nameBlock = stack.Children[0] as TextBlock;
@@ -209,7 +253,7 @@ namespace QuickMailGenerator
                     var inputBox = inputStack.Children[0] as TextBox;
                     Debug.WriteLine(inputBox.Text);
 
-                    inputs.Add(new KeyValuePair<string, string>(nameBlock.Text, inputBox.Text));                    
+                    inputs.Add(new KeyValuePair<string, string>(nameBlock.Text, inputBox.Text));
                 }
             }
 
@@ -226,13 +270,13 @@ namespace QuickMailGenerator
             mailDic.Add("bcc", openingTemplate.MailBcc);
             mailDic.Add("title", openingTemplate.MailTitle);
             mailDic.Add("content", openingTemplate.MailContent);
-            
+
             for (int i = inputs.Count - 1; i >= 0; i--)
-            {                
+            {
                 foreach (string key in mailDic.Keys.ToList())
                 {
                     mailDic[key] = mailDic[key].Replace("{" + inputs[i].Key + "}", inputs[i].Value);
-                }               
+                }
             }
 
             foreach (string key in mailDic.Keys.ToList())
@@ -242,19 +286,19 @@ namespace QuickMailGenerator
 
 
             var url = $"mailto:{mailDic["to"]}?";
-            if(mailDic["cc"] != "")
+            if (mailDic["cc"] != "")
             {
                 url += $"cc={ mailDic["cc"]}&";
             }
-            if(mailDic["bcc"] != "")
+            if (mailDic["bcc"] != "")
             {
                 url += $"bcc={ mailDic["bcc"]}&";
             }
-            if(mailDic["title"] != "")
+            if (mailDic["title"] != "")
             {
                 url += $"subject={mailDic["title"]}&";
             }
-            if(mailDic["content"] != "")
+            if (mailDic["content"] != "")
             {
                 url += $"body={mailDic["content"]}";
             }

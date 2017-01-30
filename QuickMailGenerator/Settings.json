@@ -13,8 +13,21 @@
       "name": "テンプレート3"
     }
   ],
+  "general": {
+    "input": [
+      {
+        "name": "user",
+        "description": "general user name",
+        "default": "default user name"
+      },
+      {
+        "name": "footer",
+        "type": "Multiline"
+      }
+    ]
+  },
   "templates": [
-    
+
     {
       "id": "template1",
       "name": "テンプレート1",
@@ -30,17 +43,20 @@
       "cc": "cc@sample.com",
       "bcc": "bcc@sample.com",
       "title": "ユーザ名:{user}",
-      "content": "{header}メール本文",
+      "content": "{header}メール本文\n{footer}",
       "input": [
         {
           "name": "user",
-          "description": "ユーザ名"
+          "default": "user name"
         },
         {
           "name": "header",
           "description": "ヘッダ",
           "type": "Multiline",
           "default": "こんにちは。{user}さん\nはじめまして。\n"
+        },
+        {
+          "name": "footer"
         }
       ]
 

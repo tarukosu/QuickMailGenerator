@@ -11,8 +11,10 @@ namespace QuickMailGenerator
     [JsonObject]
     public class Settings
     {
-       [JsonProperty("menu")]
+        [JsonProperty("menu")]
         public List<MenuItem> MenuItems { get; set; }
+        [JsonProperty("general")]
+        public GeneralSettings GeneralSettings { get; set; }
         [JsonProperty("templates")]
         public List<Template> Templates { get; set; }
     }
@@ -25,6 +27,13 @@ namespace QuickMailGenerator
         public string Id { get; set; }
         [JsonProperty("name")]
         public string Name { get; set; }
+    }
+
+    [JsonObject]
+    public class GeneralSettings
+    {
+        [JsonProperty("input")]
+        public List<Input> Inputs { get; set; }
     }
 
     [JsonObject]
@@ -52,6 +61,7 @@ namespace QuickMailGenerator
 
     public enum InputType
     {
+        Null,
         Singleline,
         Multiline
     }
@@ -62,13 +72,10 @@ namespace QuickMailGenerator
         [JsonProperty("name")]
         public string Name { get; set; }
         [JsonProperty("description")]
-        [DefaultValue("")]
         public string Description { get; set; }
         [JsonProperty("default")]
-        [DefaultValue("")]
         public string Default { get; set; }
         [JsonProperty("type")]
-        [DefaultValue(InputType.Singleline)]
         public InputType Type { get; set; }
     }
 }
