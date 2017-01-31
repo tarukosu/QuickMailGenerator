@@ -51,10 +51,10 @@ namespace QuickMailGenerator
         [JsonProperty("bcc")]
         [DefaultValue("")]
         public string MailBcc { get; set; }
-        [JsonProperty("title")]
-        public string MailTitle { get; set; }
-        [JsonProperty("content")]
-        public string MailContent { get; set; }
+        [JsonProperty("subject")]
+        public string MailSubject { get; set; }
+        [JsonProperty("body")]
+        public List<string> MailBody { get; set; }
         [JsonProperty("input")]
         public List<Input> Inputs { get; set; }
     }

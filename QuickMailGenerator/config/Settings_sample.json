@@ -32,18 +32,21 @@
       "id": "template1",
       "name": "テンプレート1",
       "to": "to@sample.com",
-      "title": "メールタイトル",
-      "content": "メール本文"
+      "subject": "メールタイトル",
+      "body": [ "メール本文" ]
     },
-
     {
       "id": "template2",
-      "name": "テンプレート1",
+      "name": "テンプレート2",
       "to": "to@sample.com",
       "cc": "cc@sample.com",
       "bcc": "bcc@sample.com",
-      "title": "ユーザ名:{user}",
-      "content": "{header}メール本文\n{footer}",
+      "subject": "ユーザ名:{user}",
+      "body": [
+        "{header}",
+        "メール本文",
+        "{footer}"
+      ],
       "input": [
         {
           "name": "user",

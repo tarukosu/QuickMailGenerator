@@ -64,6 +64,11 @@ namespace QuickMailGenerator
 
                 foreach (var template in settings.Templates)
                 {
+                    if (template.MailBody == null)
+                    {
+                        template.MailBody = new List<string>();
+                    }
+
                     if (template.Inputs == null)
                     {
                         template.Inputs = new List<Input>();
@@ -268,8 +273,8 @@ namespace QuickMailGenerator
             mailDic.Add("to", openingTemplate.MailTo);
             mailDic.Add("cc", openingTemplate.MailCc);
             mailDic.Add("bcc", openingTemplate.MailBcc);
-            mailDic.Add("title", openingTemplate.MailTitle);
-            mailDic.Add("content", openingTemplate.MailContent);
+            mailDic.Add("subject", openingTemplate.MailSubject);
+            mailDic.Add("body", string.Join("\n", openingTemplate.MailBody));
 
             for (int i = inputs.Count - 1; i >= 0; i--)
             {
@@ -294,13 +299,13 @@ namespace QuickMailGenerator
             {
                 url += $"bcc={ mailDic["bcc"]}&";
             }
-            if (mailDic["title"] != "")
+            if (mailDic["subject"] != "")
             {
-                url += $"subject={mailDic["title"]}&";
+                url += $"subject={mailDic["subject"]}&";
             }
-            if (mailDic["content"] != "")
+            if (mailDic["body"] != "")
             {
-                url += $"body={mailDic["content"]}";
+                url += $"body={mailDic["body"]}";
             }
             Debug.WriteLine(url);
             Process.Start(url);
