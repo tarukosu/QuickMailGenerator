@@ -207,6 +207,7 @@ namespace QuickMailGenerator
                             };
                             break;
                     }
+                    inputBox.TextChanged += InputBox_TextChanged;
 
                     inputStack.Children.Add(inputBox);
                     inputStack.SetValue(Grid.ColumnProperty, 1);
@@ -233,12 +234,17 @@ namespace QuickMailGenerator
                 mailButton.Click += MailButton_Click;
                 TemplatePanel.Children.Add(mailButton);
             }
+            UpdatePreview();
+        }
+
+        private void InputBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            UpdatePreview();
         }
 
         private void MailButton_Click(object sender, RoutedEventArgs e)
         {
             CreateMailItem();
-
         }
 
         private List<KeyValuePair<string, string>> getInputs()
@@ -265,8 +271,12 @@ namespace QuickMailGenerator
             return inputs;
         }
 
-        private void CreateMailItem()
+        private Dictionary<string, string> GetMailElements()
         {
+            if(openingTemplate == null)
+            {
+                return null;
+            }
             var inputs = getInputs();
 
             var mailDic = new Dictionary<string, string>();
@@ -283,12 +293,64 @@ namespace QuickMailGenerator
                     mailDic[key] = mailDic[key].Replace("{" + inputs[i].Key + "}", inputs[i].Value);
                 }
             }
+            /*
+            foreach (string key in mailDic.Keys.ToList())
+            {
+                mailDic[key] = mailDic[key].Replace("\n", "%0A");
+            }
+            */
+            return mailDic;
+        }
+
+        private void UpdatePreview()
+        {
+            var mailDic = GetMailElements();
+
+            string to = "", cc = "", bcc = "", subject = "", body = "";
+            if(mailDic != null)
+            { 
+                to = mailDic["to"];
+                cc = mailDic["cc"];
+                bcc = mailDic["bcc"];
+                subject = mailDic["subject"];
+                body = mailDic["body"];
+
+            }
+            ToPreview.Text = to;
+            CcPreview.Text = cc;
+            BccPreview.Text = bcc;
+            SubjectPreview.Text = subject;
+            BodyPreview.Text = body;
+            
+        }
+
+        private void CreateMailItem()
+        {
+            /*
+            var inputs = getInputs();
+
+            var mailDic = new Dictionary<string, string>();
+            mailDic.Add("to", openingTemplate.MailTo);
+            mailDic.Add("cc", openingTemplate.MailCc);
+            mailDic.Add("bcc", openingTemplate.MailBcc);
+            mailDic.Add("subject", openingTemplate.MailSubject);
+            mailDic.Add("body", string.Join("\n", openingTemplate.MailBody));
+
+            for (int i = inputs.Count - 1; i >= 0; i--)
+            {
+                foreach (string key in mailDic.Keys.ToList())
+                {
+                    mailDic[key] = mailDic[key].Replace("{" + inputs[i].Key + "}", inputs[i].Value);
+                }
+            }
+            */
+
+            var mailDic = GetMailElements();
 
             foreach (string key in mailDic.Keys.ToList())
             {
                 mailDic[key] = mailDic[key].Replace("\n", "%0A");
             }
-
 
             var url = $"mailto:{mailDic["to"]}?";
             if (mailDic["cc"] != "")

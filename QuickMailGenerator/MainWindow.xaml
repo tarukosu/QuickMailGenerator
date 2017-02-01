@@ -11,11 +11,12 @@
             <!-- 1:2の比率で列を定義 -->
             <ColumnDefinition Width="1*" MaxWidth="300"/>
             <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
         <!--
         <TextBox x:Name="textBox2" HorizontalAlignment="Left" Height="23"  TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" Grid.Column="1"/>
         -->
-        
+
         <ScrollViewer >
             <StackPanel Name="MenuPanel">
             </StackPanel>
@@ -23,6 +24,48 @@
         <ScrollViewer Grid.Column="1">
             <StackPanel Name="TemplatePanel" Margin="10">
             </StackPanel>
+        </ScrollViewer>
+        <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+            <Grid Margin="10">
+                <Grid.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="FontSize" Value="20px" />
+                    </Style>
+                </Grid.Resources>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" MinWidth="79"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Column="0" Grid.Row="0">
+                    To
+                </TextBlock>
+                <TextBlock Grid.Column="0" Grid.Row="1">
+                    Cc
+                </TextBlock>
+                <TextBlock Grid.Column="0" Grid.Row="2">
+                    Bcc
+                </TextBlock>
+                <TextBlock Grid.Column="0" Grid.Row="3">
+                    Subject
+                </TextBlock>
+                <TextBlock Grid.Column="0" Grid.Row="4">
+                    Body
+                </TextBlock>
+                <TextBlock x:Name="ToPreview" Grid.Column="1" Grid.Row="0"/>
+                <TextBlock x:Name="CcPreview" Grid.Column="1" Grid.Row="1"/>
+                <TextBlock x:Name="BccPreview" Grid.Column="1" Grid.Row="2"/>
+                <TextBlock x:Name="SubjectPreview" Grid.Column="1" Grid.Row="3"/>
+                <TextBlock x:Name="BodyPreview" Grid.Column="1" Grid.Row="4"/>
+
+
+            </Grid>
         </ScrollViewer>
     </Grid>
 </Window>
