@@ -29,7 +29,7 @@
             <Grid Margin="10">
                 <Grid.Resources>
                     <Style TargetType="TextBlock">
-                        <Setter Property="FontSize" Value="20px" />
+                        <Setter Property="FontSize" Value="18px" />
                     </Style>
                 </Grid.Resources>
                 <Grid.ColumnDefinitions>
