@@ -98,3 +98,6 @@ input で設定した項目の name の文字列を { } で囲んで文字列内
     - Singleline: 一行
     - Multiline:  複数行
 - default: 初期値
+
+# License
+MIT
