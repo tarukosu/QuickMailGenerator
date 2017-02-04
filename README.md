@@ -1,3 +1,5 @@
+![](demo.gif)
+
 # ダウンロード
 [Releaseページ](https://github.com/tarukosu/QuickMailGenerator/releases) より、zipファイルをダウンロードして展開  
 QuickMailGenerator.exe を実行
