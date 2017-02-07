@@ -29,7 +29,7 @@ namespace QuickMailGenerator
         private int fontSizeInputName = 24;
         private int fontSizeInputDescription = 14;
         private int fontSizeInput = 20;
-        private int fontSizeMenu = 20;
+        private int fontSizeMenu = 18;
 
         private Template openingTemplate;
 
@@ -40,7 +40,6 @@ namespace QuickMailGenerator
             try
             {
                 var settingsText = File.ReadAllText("config/Settings.json");
-
 
                 settings = JsonConvert.DeserializeObject<Settings>(settingsText, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Populate });
                 foreach (var menuItem in settings.MenuItems)
@@ -170,23 +169,23 @@ namespace QuickMailGenerator
                                     {
                                         Name = input.Id,
                                         Text = input.Name,
-                                        FontSize = fontSizeInputName
+                                        FontSize = fontSizeInputName,
+                                        TextWrapping=TextWrapping.Wrap
                                     },
                                       new TextBlock
                                     {
                                         Text = input.Description,
-                                        FontSize = fontSizeInputDescription
+                                        FontSize = fontSizeInputDescription,
+                                        TextWrapping=TextWrapping.Wrap
                                     },
                             }
                         });
-
 
                     var inputStack = new StackPanel();
 
                     var iMargin = inputStack.Margin;
                     iMargin.Top = 10;
                     inputStack.Margin = iMargin;
-
 
                     TextBox inputBox = new TextBox();
                     switch (input.Type)
