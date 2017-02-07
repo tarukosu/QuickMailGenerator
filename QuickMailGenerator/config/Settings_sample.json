@@ -16,12 +16,14 @@
   "general": {
     "input": [
       {
-        "name": "user",
+        "id": "name",
+        "name": "ユーザ名",
         "description": "general user name",
         "default": "default user name"
       },
       {
-        "name": "footer",
+        "id":  "footer",
+        "name": "フッター",
         "type": "Multiline"
       }
     ]
@@ -49,17 +51,18 @@
       ],
       "input": [
         {
-          "name": "user",
+          "id": "user",
           "default": "user name"
         },
         {
-          "name": "header",
-          "description": "ヘッダ",
+          "id": "header",
+          "name":  "ヘッダ",
+          "description": "メールのヘッダ文",
           "type": "Multiline",
           "default": "こんにちは。{user}さん\nはじめまして。\n"
         },
         {
-          "name": "footer"
+          "id": "footer"
         }
       ]
 

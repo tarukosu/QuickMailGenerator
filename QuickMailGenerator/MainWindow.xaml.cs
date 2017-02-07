@@ -75,20 +75,24 @@ namespace QuickMailGenerator
                     }
                     foreach (var input in template.Inputs)
                     {
-                        var sameNameInput = settings.GeneralSettings.Inputs.FirstOrDefault(x => x.Name == input.Name);
-                        if (sameNameInput != null)
+                        var sameIdInput = settings.GeneralSettings.Inputs.FirstOrDefault(x => x.Id == input.Id);
+                        if (sameIdInput != null)
                         {
+                            if (input.Name == null)
+                            {
+                                input.Name = sameIdInput.Name;
+                            }
                             if (input.Description == null)
                             {
-                                input.Description = sameNameInput.Description;
+                                input.Description = sameIdInput.Description;
                             }
                             if (input.Default == null)
                             {
-                                input.Default = sameNameInput.Default;
+                                input.Default = sameIdInput.Default;
                             }
                             if (input.Type == InputType.Null)
                             {
-                                input.Type = sameNameInput.Type;
+                                input.Type = sameIdInput.Type;
                             }
                         }
 
@@ -164,7 +168,7 @@ namespace QuickMailGenerator
                             {
                                      new TextBlock
                                     {
-                                        Name = "name",
+                                        Name = input.Id,
                                         Text = input.Name,
                                         FontSize = fontSizeInputName
                                     },
@@ -264,7 +268,7 @@ namespace QuickMailGenerator
                     var inputBox = inputStack.Children[0] as TextBox;
                     Debug.WriteLine(inputBox.Text);
 
-                    inputs.Add(new KeyValuePair<string, string>(nameBlock.Text, inputBox.Text));
+                    inputs.Add(new KeyValuePair<string, string>(nameBlock.Name, inputBox.Text));
                 }
             }
 
@@ -273,7 +277,7 @@ namespace QuickMailGenerator
 
         private Dictionary<string, string> GetMailElements()
         {
-            if(openingTemplate == null)
+            if (openingTemplate == null)
             {
                 return null;
             }
@@ -307,8 +311,8 @@ namespace QuickMailGenerator
             var mailDic = GetMailElements();
 
             string to = "", cc = "", bcc = "", subject = "", body = "";
-            if(mailDic != null)
-            { 
+            if (mailDic != null)
+            {
                 to = mailDic["to"];
                 cc = mailDic["cc"];
                 bcc = mailDic["bcc"];
@@ -321,7 +325,7 @@ namespace QuickMailGenerator
             BccPreview.Text = bcc;
             SubjectPreview.Text = subject;
             BodyPreview.Text = body;
-            
+
         }
 
         private void CreateMailItem()
